@@ -29,6 +29,9 @@ export async function getStaticProps() {
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
 
+
+  // await new Promise((r) => setTimeout(r, 3000));
+
   // This function is secure and will only be executed on the server and it will not be shipped to the client
   // ---> So putting the database credentials here is safe
 
