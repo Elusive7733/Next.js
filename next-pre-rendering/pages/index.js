@@ -25,10 +25,14 @@ export default function Home(props) {
 // This function prepares the props for the component
 // ---> This function will always be executed first
 export async function getStaticProps() {
+  
+  const revalidataionTime = 10; // in seconds
+  console.log(`Regenerating... ${revalidataionTime} seconds passed`);
+
+
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json"); // process.cwd() returns the current working directory (it always returns the root directory of the project)
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
-
 
   // await new Promise((r) => setTimeout(r, 3000));
 
@@ -36,5 +40,13 @@ export async function getStaticProps() {
   // ---> So putting the database credentials here is safe
 
   //. Always must return an object with props key
-  return { props: { items: data.items } };
+  return {
+    props: { items: data.items },
+    revalidate: revalidataionTime, // This will regenerate the page every 10 seconds
+  };
 }
+
+//* If the data changes frequently we have to rebuild and redeploy the app every time, which is not efficient
+//. ---> To Overcome this we can do 2 of the following things
+// 1 ---> We can use useEffect to fetch the latest data, while displaying the old data until the new data is fetched
+// 2 ---> We implement Incremental Static Regeneration (ISR) which will rebuild the page every x seconds (This is better)
