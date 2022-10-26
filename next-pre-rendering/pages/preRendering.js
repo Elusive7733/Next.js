@@ -12,7 +12,9 @@ export default function PreRendering(props) {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item.id}>{item.name}</li>
+        <li key={item.id}>
+          <Link href={`/${item.id}`}>{item.name}</Link>
+        </li>
       ))}
     </ul>
   );
@@ -25,7 +27,6 @@ export default function PreRendering(props) {
 // This function prepares the props for the component
 // ---> This function will always be executed first
 export async function getStaticProps() {
-
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json"); // process.cwd() returns the current working directory (it always returns the root directory of the project)
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);

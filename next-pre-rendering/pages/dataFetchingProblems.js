@@ -8,7 +8,9 @@ export default function NoData(props) {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item.id}>{item.name}</li>
+        <li key={item.id}>
+          <Link href={`/${item.id}`}>{item.name}</Link>
+        </li>
       ))}
     </ul>
   );

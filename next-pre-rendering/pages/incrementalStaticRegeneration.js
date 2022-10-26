@@ -1,6 +1,7 @@
 // Core node js modules
 import path from "path";
 import fs from "fs/promises";
+import Link from "next/link";
 
 export default function ISR(props) {
   const { items } = props;
@@ -8,7 +9,9 @@ export default function ISR(props) {
   return (
     <ul>
       {items.map((item) => (
-        <li key={item.id}>{item.name}</li>
+        <li key={item.id}>
+          <Link href={`/${item.id}`}>{item.name}</Link>
+        </li>
       ))}
     </ul>
   );
@@ -23,7 +26,7 @@ export async function getStaticProps() {
   const revalidataionTime = 10; // in seconds
   console.log(`Regenerating... ${revalidataionTime} seconds passed`);
 
-  const filePath = path.join(process.cwd(), "data", "dummy-backend.json"); 
+  const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
 
@@ -32,4 +35,3 @@ export async function getStaticProps() {
     revalidate: revalidataionTime, // This will regenerate the page every 10 seconds
   };
 }
-
