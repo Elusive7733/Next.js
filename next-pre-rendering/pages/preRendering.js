@@ -6,7 +6,7 @@ import fs from "fs/promises";
 
 //Next.js will pre-render the page at build time by default if it doesn't contain dynamic data
 
-export default function Home(props) {
+export default function PreRendering(props) {
   const { items } = props;
 
   return (
@@ -18,23 +18,17 @@ export default function Home(props) {
   );
 }
 
-// We want to load the data from the backend without the client waiting for an http request to be completed
+//* We want to load the data from the backend without the client waiting for an http request to be completed
 // ---> Instead we will prefetch the data before this component is created
 // ---> So when the client recieves this page it will be rendered with all the data
 
 // This function prepares the props for the component
 // ---> This function will always be executed first
 export async function getStaticProps() {
-  
-  const revalidataionTime = 10; // in seconds
-  console.log(`Regenerating... ${revalidataionTime} seconds passed`);
-
 
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json"); // process.cwd() returns the current working directory (it always returns the root directory of the project)
   const jsonData = await fs.readFile(filePath);
   const data = JSON.parse(jsonData);
-
-  // await new Promise((r) => setTimeout(r, 3000));
 
   // This function is secure and will only be executed on the server and it will not be shipped to the client
   // ---> So putting the database credentials here is safe
@@ -42,11 +36,5 @@ export async function getStaticProps() {
   //. Always must return an object with props key
   return {
     props: { items: data.items },
-    revalidate: revalidataionTime, // This will regenerate the page every 10 seconds
   };
 }
-
-//* If the data changes frequently we have to rebuild and redeploy the app every time, which is not efficient
-//. ---> To Overcome this we can do 2 of the following things
-// 1 ---> We can use useEffect to fetch the latest data, while displaying the old data until the new data is fetched
-// 2 ---> We implement Incremental Static Regeneration (ISR) which will rebuild the page every x seconds (This is better)
