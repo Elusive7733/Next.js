@@ -5,9 +5,9 @@ import fs from "fs/promises";
 export default function ItemId(props) {
   // console.log(props.loadedItem);
 
-  if (!props.loadedItem) {
-    return <p>Loading...</p>
-  }
+  // if (!props.loadedItem) {
+  //   return <p>Loading...</p>
+  // }
 
   return (
     <div>
@@ -50,5 +50,6 @@ export async function getStaticPaths() {
     // ---> getStaticProps is called for each path in getStaticPaths
     paths: [{ params: { iId: "1" } }, { params: { iId: "2" } }, { params: { iId: "3" } }],
     fallback: true, // This allows to pre-generate highly visited pages but postpone the generation of less visited pages
+    // fallback: 'blocking', // This makes the Next.js wait before rendering the page until getStaticProps is finished
   };
 }
