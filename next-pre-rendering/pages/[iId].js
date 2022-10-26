@@ -4,6 +4,11 @@ import fs from "fs/promises";
 
 export default function ItemId(props) {
   // console.log(props.loadedItem);
+
+  if (!props.loadedItem) {
+    return <p>Loading...</p>
+  }
+
   return (
     <div>
       <h1>Item {props.loadedItem.id}</h1>
