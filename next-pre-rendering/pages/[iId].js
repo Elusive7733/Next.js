@@ -5,9 +5,10 @@ import fs from "fs/promises";
 export default function ItemId(props) {
   // console.log(props.loadedItem);
 
-  // if (!props.loadedItem) {
-  //   return <p>Loading...</p>
-  // }
+  // Use this if you want to return a 404 page and fallback is set to true;
+  if (!props.loadedItem) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div>
@@ -30,14 +31,18 @@ export async function getStaticProps(context) {
 
   
   const loadedItem = data.items.find((item) => Number(item.id) === Number(ItemId));
-  
-  
-  // console.log(loadedItem);
+
+  // Use this if you want to return a 404 page and fallback is set to true;
+  if (!loadedItem) {
+    return {
+      notFound: true,
+    };
+  }
 
   return {
     props: { loadedItem },
   };
-}
+}   
 
 //* It is impossible to pre-render this page as is since it has dynamic routes so Next.js can't know how many pages to generate
 // ---> To overcome this we can use getStaticPaths() to pre generate pages for the given paths
