@@ -14,24 +14,25 @@ export default function NoData(props) {
   );
 }
 
-//* In the Event we find no data we can display a 404 Page instead of this empty component
-// ---> We return the object in getStaticProps with the notFound keyword
+//* In the event getStaticProps fail to retrieve data or retrieves incorrect data
+// ---> We can use the notFound key (that is a string) to return a 404 page
+// ---> we can use the redirect key (that is also an object) to redirect the user to another page
 
 export async function getStaticProps() {
-  const revalidataionTime = 10; // in seconds
-  console.log(`Regenerating... ${revalidataionTime} seconds passed`);
-
   const filePath = path.join(process.cwd(), "data", "dummy-backend.json");
   const jsonData = await fs.readFile(filePath);
   let data = JSON.parse(jsonData);
 
-//   data = null;
+  //   data = null;
   if (!data) {
+    return { redirect: { destination: "/" } }; // This will redirect the user to the home page
+  }
+
+  if (data.items.length === 0) {
     return { notFound: true };
   }
 
   return {
     props: { items: data.items },
-    revalidate: revalidataionTime, // This will regenerate the page every 10 seconds
   };
 }
