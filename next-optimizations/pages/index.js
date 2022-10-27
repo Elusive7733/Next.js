@@ -1,4 +1,5 @@
 import Head from "next/head";
+// import Image from "next/image"
 
 export default function Home() {
   return (
@@ -19,6 +20,8 @@ export default function Home() {
       <main>
         <h1>Welcome to Next.js Optimizations</h1>
       </main>
+
+      {/* <Image src="/favicon.ico"/> */}
     </div>
   );
 }
