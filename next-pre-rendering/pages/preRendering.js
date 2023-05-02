@@ -34,7 +34,7 @@ export async function getStaticProps() {
   // This function is secure and will only be executed on the server and it will not be shipped to the client
   // ---> So putting the database credentials here is safe
 
-  //. Always must return an object with props key
+  //. Must Always return an object with props key
   return {
     props: { items: data.items },
   };
